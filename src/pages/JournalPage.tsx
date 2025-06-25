@@ -653,7 +653,7 @@ const JournalPage: React.FC = () => {
 
       {/* Audio Player */}
       <audio ref={audioRef} loop preload="auto">
-        <source src="/src/public/audio/calmingMusic.mp3" type="audio/mpeg" />
+        <source src="/audio/calmingMusic.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
 
