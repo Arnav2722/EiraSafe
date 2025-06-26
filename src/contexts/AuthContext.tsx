@@ -147,7 +147,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Define the inactivity timeout (30 minutes in milliseconds)
-const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes * 60 seconds/minute * 1000 milliseconds/second
+const INACTIVITY_TIMEOUT_MS = 1 * 60 * 1000; // 1 minute * 60 seconds/minute * 1000 milliseconds/second
 const CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
