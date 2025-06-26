@@ -465,10 +465,7 @@ const NotesDisguise: React.FC = () => {
   const { activatePanic } = usePanic();
   // Initial fake notes moved to state
   const [notes, setNotes] = useState<Note[]>([
-    { id: '1', title: 'Shopping List', content: 'Milk, Bread, Eggs, Vegetables', date: '2 hours ago' },
-    { id: '2', title: 'Meeting Notes', content: 'Discuss project timeline, Assign tasks, Schedule follow-up', date: 'Yesterday' },
-    { id: '3', title: 'Ideas', content: 'App feature ideas, Book recommendations', date: 'Aug 15' },
-    { id: '4', title: 'Reminders', content: 'Call mom, Pay electricity bill, Doctor appointment', date: 'Aug 10' },
+    // { id: '1', title: 'Ideas', content: 'App feature ideas, Book recommendations', date: 'Aug 15' },
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
