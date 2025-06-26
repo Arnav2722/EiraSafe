@@ -31,11 +31,6 @@ const Footer: React.FC = () => {
                   Mail Id: eirasafe@gmail.com
                 </a>
                 <label className="h-4 w-4 text-purple-600 mr-2" />
-                <a 
-                  className="text-purple-700 hover:text-purple-900 text-sm font-medium"
-                >
-                  Built with bolt.new
-                </a>
               </div>
             </div>
             
