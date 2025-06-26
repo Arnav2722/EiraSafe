@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Settings, Eye, EyeOff, Shield, Lock, Moon, Sun, Trash2, AlertTriangle } from 'lucide-react';
+import { Settings, EyeOff, Shield, Lock,  Sun, Trash2, AlertTriangle } from 'lucide-react';
+// import { Settings, Eye, EyeOff, Shield, Lock, Moon, Sun, Trash2, AlertTriangle } from 'lucide-react';
 import { usePanic } from '../contexts/PanicContext';
 
 const SettingsPage: React.FC = () => {
   const { disguiseAs } = usePanic();
-  const [theme, setTheme] = useState('light');
+  // const [theme, setTheme] = useState('light');
   const [showConfirmClear, setShowConfirmClear] = useState(false);
   
   const clearAllData = () => {
@@ -52,47 +53,47 @@ const SettingsPage: React.FC = () => {
       {/* Settings Sections */}
       <div className="space-y-6">
         {/* Appearance Section */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-            <Eye className="w-5 h-5 mr-2 text-purple-600" />
-            Appearance
-          </h2>
+        {/* <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100"> */}
+          {/* <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center"> */}
+            {/* <Eye className="w-5 h-5 mr-2 text-purple-600" /> */}
+            {/* Appearance */}
+          {/* </h2> */}
           
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Theme
-              </label>
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => setTheme('light')}
-                  className={`flex items-center px-4 py-2 rounded-lg ${
-                    theme === 'light'
-                      ? 'bg-purple-100 text-purple-800 border border-purple-200'
-                      : 'bg-gray-100 text-gray-700 border border-gray-200'
-                  }`}
-                >
-                  <Sun className="w-5 h-5 mr-2" />
-                  Light
-                </button>
-                <button
-                  onClick={() => setTheme('dark')}
-                  className={`flex items-center px-4 py-2 rounded-lg ${
-                    theme === 'dark'
-                      ? 'bg-purple-100 text-purple-800 border border-purple-200'
-                      : 'bg-gray-100 text-gray-700 border border-gray-200'
-                  }`}
-                >
-                  <Moon className="w-5 h-5 mr-2" />
-                  Dark
-                </button>
-              </div>
-              <p className="mt-1 text-sm text-gray-500">
-                Dark mode is better for privacy in low-light situations.
-              </p>
-            </div>
-          </div>
-        </div>
+          {/* <div className="space-y-4"> */}
+            {/* <div> */}
+              {/* <label className="block text-sm font-medium text-gray-700 mb-2"> */}
+                {/* Theme */}
+              {/* </label> */}
+              {/* <div className="flex space-x-4"> */}
+                {/* <button */}
+                  {/* onClick={() => setTheme('light')} */}
+                  {/* className={`flex items-center px-4 py-2 rounded-lg ${ */}
+                    {/* theme === 'light' */}
+                      {/* ? 'bg-purple-100 text-purple-800 border border-purple-200' */}
+                      {/* : 'bg-gray-100 text-gray-700 border border-gray-200' */}
+                  {/* }`} */}
+                {/* > */}
+                  {/* <Sun className="w-5 h-5 mr-2" /> */}
+                  {/* Light */}
+                {/* </button> */}
+                {/* <button */}
+                  {/* onClick={() => setTheme('dark')} */}
+                  {/* className={`flex items-center px-4 py-2 rounded-lg ${ */}
+                    {/* theme === 'dark' */}
+                      {/* ? 'bg-purple-100 text-purple-800 border border-purple-200' */}
+                      {/* : 'bg-gray-100 text-gray-700 border border-gray-200' */}
+                  {/* }`} */}
+                {/* > */}
+                  {/* <Moon className="w-5 h-5 mr-2" /> */}
+                  {/* Dark */}
+                {/* </button> */}
+              {/* </div> */}
+              {/* <p className="mt-1 text-sm text-gray-500"> */}
+                {/* Dark mode is better for privacy in low-light situations. */}
+              {/* </p> */}
+            {/* </div> */}
+          {/* </div> */}
+        {/* </div> */}
 
         {/* Disguise Options */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">

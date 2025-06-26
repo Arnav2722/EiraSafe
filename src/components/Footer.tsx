@@ -50,7 +50,7 @@
 
 
 import React from 'react';
-import { Heart, Phone, Mail } from 'lucide-react'; // Import Mail icon for better visual
+import { Heart, Phone} from 'lucide-react'; // Import Mail icon for better visual
 
 const Footer: React.FC = () => {
   return (
