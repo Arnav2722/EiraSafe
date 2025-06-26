@@ -260,6 +260,122 @@
 //   return context;
 // };
 
+
+// kya kru is attempt ka
+
+// // src/contexts/AuthContext.tsx
+// import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+// import { supabase } from '../lib/supabase';
+// import { User, Session } from '@supabase/supabase-js';
+
+// interface AuthContextType {
+//   user: User | null;
+//   session: Session | null;
+//   loading: boolean;
+// }
+
+// const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// // Define the inactivity timeout (30 minutes in milliseconds)
+// const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes * 60 seconds/minute * 1000 milliseconds/second
+// const CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
+
+// export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+//   const [user, setUser] = useState<User | null>(null);
+//   const [session, setSession] = useState<Session | null>(null);
+//   const [loading, setLoading] = useState(true);
+//   const lastActivityTimeRef = useRef<number>(Date.now()); // Use ref to keep track of last activity time without re-rendering
+
+//   useEffect(() => {
+//     // --- Supabase Session Management ---
+//     const getInitialSession = async () => {
+//       try {
+//         const { data: { session }, error } = await supabase.auth.getSession();
+//         if (error) {
+//           console.error("Error retrieving initial session:", error);
+//         }
+//         setSession(session);
+//         setUser(session?.user || null);
+//       } catch (e) {
+//         console.error("Unexpected error during initial session check:", e);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     getInitialSession();
+
+//     const { data: { subscription: authListenerSubscription } } = supabase.auth.onAuthStateChange(
+//       (_event, currentSession) => {
+//         setSession(currentSession);
+//         setUser(currentSession?.user || null);
+//         setLoading(false);
+//         // Reset activity time on any auth state change (login/logout/refresh)
+//         lastActivityTimeRef.current = Date.now();
+//       }
+//     );
+
+//     // --- Inactivity Logout Logic ---
+
+//     // Function to update last activity time
+//     const updateLastActivityTime = () => {
+//       lastActivityTimeRef.current = Date.now();
+//     };
+
+//     // Add activity listeners
+//     document.addEventListener('mousemove', updateLastActivityTime);
+//     document.addEventListener('keydown', updateLastActivityTime);
+//     document.addEventListener('click', updateLastActivityTime);
+//     document.addEventListener('scroll', updateLastActivityTime);
+//     // You can add more events like 'touchstart', 'touchend' for mobile devices
+
+//     // Set up the inactivity check interval
+//     const inactivityInterval = setInterval(() => {
+//       // Only check for inactivity if a user is currently logged in and not in a loading state
+//       if (session && !loading && Date.now() - lastActivityTimeRef.current > INACTIVITY_TIMEOUT_MS) {
+//         console.log('User inactive for 30 minutes. Logging out...');
+//         supabase.auth.signOut(); // Trigger Supabase logout
+//         // The authListener will pick this up, update session/user to null,
+//         // and App.tsx's PrivateRoute will handle the navigation to /auth.
+//       }
+//     }, CHECK_INTERVAL_MS); // Check every minute
+
+//     // --- REMOVED: Logout on Browser/Tab Close Logic ---
+//     // The previous 'handleLogoutOnClose' function and 'window.addEventListener('beforeunload', ...)'
+//     // are removed from here and the cleanup. This allows the session to persist
+//     // across browser/tab closures as per Supabase's default behavior.
+
+
+//     // Cleanup function for all listeners and intervals
+//     return () => {
+//       if (authListenerSubscription) {
+//         authListenerSubscription.unsubscribe();
+//       }
+//       document.removeEventListener('mousemove', updateLastActivityTime);
+//       document.removeEventListener('keydown', updateLastActivityTime);
+//       document.removeEventListener('click', updateLastActivityTime);
+//       document.removeEventListener('scroll', updateLastActivityTime);
+//       clearInterval(inactivityInterval); // Clear the inactivity interval
+//       // REMOVED: window.removeEventListener('beforeunload', handleLogoutOnClose);
+//     };
+//   }, [session, loading]); // Depend on session and loading to re-evaluate inactivity logic if they change
+
+//   return (
+//     <AuthContext.Provider value={{ user, session, loading }}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+// export const useAuth = () => {
+//   const context = useContext(AuthContext);
+//   if (context === undefined) {
+//     throw new Error('useAuth must be used within an AuthProvider');
+//   }
+//   return context;
+// };
+
+
 // src/contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
@@ -273,9 +389,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define the inactivity timeout (30 minutes in milliseconds)
-const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes * 60 seconds/minute * 1000 milliseconds/second
-const CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
+// Define the inactivity timeout (2 minutes in milliseconds)
+const INACTIVITY_TIMEOUT_MS = 2 * 60 * 1000; // 2 minutes * 60 seconds/minute * 1000 milliseconds/second
+const CHECK_INTERVAL_MS = 60/2 * 1000; // Check every 30 seconds
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -337,10 +453,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }, CHECK_INTERVAL_MS); // Check every minute
 
-    // --- REMOVED: Logout on Browser/Tab Close Logic ---
-    // The previous 'handleLogoutOnClose' function and 'window.addEventListener('beforeunload', ...)'
-    // are removed from here and the cleanup. This allows the session to persist
-    // across browser/tab closures as per Supabase's default behavior.
+    // --- Logout on Browser/Tab Close Logic ---
+    const handleLogoutOnClose = async () => {
+      // Only attempt to sign out if there's an active session
+      // Note: Asynchronous operations in 'beforeunload' are not guaranteed to complete.
+      // This primarily ensures localStorage is cleared.
+      if (session) {
+        try {
+          await supabase.auth.signOut();
+          console.log("User signed out on browser/tab close.");
+        } catch (error) {
+          console.error("Error signing out on browser/tab close:", error);
+        }
+      }
+    };
+
+    // Add the event listener for beforeunload
+    window.addEventListener('beforeunload', handleLogoutOnClose);
 
 
     // Cleanup function for all listeners and intervals
@@ -353,7 +482,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       document.removeEventListener('click', updateLastActivityTime);
       document.removeEventListener('scroll', updateLastActivityTime);
       clearInterval(inactivityInterval); // Clear the inactivity interval
-      // REMOVED: window.removeEventListener('beforeunload', handleLogoutOnClose);
+      window.removeEventListener('beforeunload', handleLogoutOnClose); // Clean up beforeunload listener
     };
   }, [session, loading]); // Depend on session and loading to re-evaluate inactivity logic if they change
 
