@@ -1,218 +1,3 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { Shield, Mail, Lock, Eye, EyeOff, Chrome } from 'lucide-react';
-// import { supabase } from '../lib/supabase';
-
-// const AuthPage: React.FC = () => {
-//   const [isLogin, setIsLogin] = useState(true);
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [confirmPassword, setConfirmPassword] = useState(''); // New state for confirm password
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // New state for confirm password visibility
-//   const [error, setError] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleAuth = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError('');
-
-//     // Password and Confirm Password matching logic (only for signup)
-//     if (!isLogin && password !== confirmPassword) {
-//       setError('Password and Confirm Password do not match.');
-//       return; // Stop the function if passwords don't match
-//     }
-
-//     try {
-//       if (isLogin) {
-//         const { error } = await supabase.auth.signInWithPassword({
-//           email,
-//           password,
-//         });
-//         if (error) throw error;
-//         navigate('/');
-//       } else {
-//         const { error } = await supabase.auth.signUp({
-//           email,
-//           password,
-//         });
-//         if (error) throw error;
-//         navigate('/');
-//       }
-//     } catch (err: any) {
-//       setError(err.message || 'An error occurred');
-//     }
-//   };
-
-//   const handleGoogleAuth = async () => {
-//     setError('');
-//     try {
-//       const { error } = await supabase.auth.signInWithOAuth({
-//         provider: 'google',
-//         options: {
-//           redirectTo: window.location.origin, // Or a specific callback URL
-//         },
-//       });
-//       if (error) throw error;
-//       // Supabase will handle redirection to Google for authentication,
-//       // and then redirect back to your app, triggering an auth state change.
-//     } catch (err: any) {
-//       setError(err.message || 'An error occurred during Google sign-in');
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center px-4">
-//       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-//         <div className="text-center mb-8">
-//           <div className="flex justify-center mb-4">
-//             <Shield className="w-12 h-12 text-purple-600" />
-//           </div>
-//           <h1 className="text-2xl font-bold text-gray-800">
-//             Welcome to EiraSafe
-//           </h1>
-//           <p className="text-gray-600 mt-2">
-//             Your safe space for healing and support
-//           </p>
-//         </div>
-
-//         {error && (
-//           <div className="mb-4 p-3 bg-red-50 border border-red-100 text-red-700 rounded-lg">
-//             {error}
-//           </div>
-//         )}
-
-//         <form onSubmit={handleAuth} className="space-y-6">
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
-//               Email
-//             </label>
-//             <div className="relative">
-//               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-//               <input
-//                 type="email"
-//                 id='email'
-//                 autoComplete='email'
-//                 value={email}
-//                 onChange={(e) => setEmail(e.target.value)}
-//                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
-//                 placeholder="Enter your email"
-//                 // placeholder="Eg:- johndoe@gmail.com"
-//                 required
-//               />
-//             </div>
-//           </div>
-
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
-//               Password
-//             </label>
-//             <div className="relative">
-//               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-//               <input
-//                 type={showPassword ? 'text' : 'password'}
-//                 autoComplete='current-password'
-//                 value={password}
-//                 onChange={(e) => setPassword(e.target.value)}
-//                 className="w-full pl-10 pr-12 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
-//                 placeholder="Enter your password"
-//                 required
-//               />
-//               <button
-//                 type="button"
-//                 onClick={() => setShowPassword(!showPassword)}
-//                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-//               >
-//                 {showPassword ? (
-//                   <EyeOff className="w-5 h-5" />
-//                 ) : (
-//                   <Eye className="w-5 h-5" />
-//                 )}
-//               </button>
-//             </div>
-//           </div>
-
-//           {!isLogin && ( // Only show Confirm Password when signing up
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Confirm Password
-//               </label>
-//               <div className="relative">
-//                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-//                 <input
-//                   type={showConfirmPassword ? 'text' : 'password'}
-//                   value={confirmPassword}
-//                   onChange={(e) => setConfirmPassword(e.target.value)}
-//                   className="w-full pl-10 pr-12 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-300"
-//                   placeholder="Confirm your password"
-//                   required
-//                 />
-//                 <button
-//                   type="button"
-//                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-//                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-//                 >
-//                   {showConfirmPassword ? (
-//                     <EyeOff className="w-5 h-5" />
-//                   ) : (
-//                     <Eye className="w-5 h-5" />
-//                   )}
-//                 </button>
-//               </div>
-//             </div>
-//           )}
-
-//           <button
-//             type="submit"
-//             className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200"
-//           >
-//             {isLogin ? 'Sign In' : 'Sign Up'}
-//           </button>
-//         </form>
-
-//         <div className="relative flex items-center py-4">
-//           <div className="flex-grow border-t border-gray-300"></div>
-//           <span className="flex-shrink mx-4 text-gray-400 text-sm">OR</span>
-//           <div className="flex-grow border-t border-gray-300"></div>
-//         </div>
-
-//         {/* Google Login Button */}
-//         <button
-//           onClick={handleGoogleAuth}
-//           className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm"
-//         >
-//           {/* Using Chrome icon as a placeholder, ideally use a dedicated Google icon */}
-//           <Chrome className="w-5 h-5 mr-3 text-red-500" />
-//           {isLogin ? 'Sign In with Google' : 'Sign Up with Google'}
-//         </button>
-
-//         <div className="mt-6 text-center">
-//           <button
-//             onClick={() => {
-//               setIsLogin(!isLogin);
-//               setError(''); 
-//               setEmail(''); 
-//               setPassword('');
-//               setConfirmPassword('');
-//             }}
-//             className="text-purple-600 hover:text-purple-800"
-//           >
-//             {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
-//           </button>
-//         </div>
-
-//         <div className="mt-8 text-center text-sm text-gray-500">
-//           <p>
-//             Your safety is our priority. All data is encrypted and stored securely.
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AuthPage;
-
 import React, { useState, useEffect } from 'react'; // Import useEffect
 import { useNavigate } from 'react-router-dom';
 import { Shield, Mail, Lock, Eye, EyeOff, Chrome } from 'lucide-react';
@@ -442,3 +227,120 @@ const AuthPage: React.FC = () => {
 };
 
 export default AuthPage;
+
+// // Example: LoginPage.tsx (or any component where you need CAPTCHA)
+// import React, { useState } from 'react';
+// import { Turnstile } from 'react-turnstile'; // Corrected import path
+// import { CLOUDFLARE_TURNSTILE_SITE_KEY } from '../lib/cloudflare'; // Adjust path as needed
+
+// const LoginPage: React.FC = () => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+//   const [message, setMessage] = useState('');
+
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+
+//     if (!turnstileToken) {
+//       setMessage('Please complete the CAPTCHA.');
+//       return;
+//     }
+
+//     setMessage('Submitting form...');
+//     // In a real application, you would send email, password, and turnstileToken
+//     // to your backend for verification.
+//     console.log('Form submitted:', { email, password, turnstileToken });
+
+//     // Example: Simulating a backend call
+//     try {
+//       const response = await fetch('/api/verify-turnstile', { // Your backend endpoint
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ turnstileToken }),
+//       });
+
+//       const data = await response.json();
+//       if (data.success) {
+//         setMessage('Login successful and CAPTCHA verified!');
+//         // Proceed with user login
+//       } else {
+//         setMessage(`CAPTCHA verification failed: ${data.error}`);
+//         // You might want to reset the Turnstile widget here
+//         // e.g., if you have a ref to the Turnstile component: turnstileRef.current.reset();
+//       }
+//     } catch (error) {
+//       console.error("Backend verification error:", error);
+//       setMessage('An error occurred during verification.');
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+//       <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+//       <form onSubmit={handleSubmit}>
+//         <div className="mb-4">
+//           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+//           <input
+//             type="email"
+//             id="email"
+//             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             required
+//           />
+//         </div>
+//         <div className="mb-6">
+//           <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+//           <input
+//             type="password"
+//             id="password"
+//             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+//             value={password}
+//             onChange={(e) => setEmail(e.target.value)}
+//             required
+//           />
+//         </div>
+
+//         {CLOUDFLARE_TURNSTILE_SITE_KEY && (
+//           <div className="mb-6">
+//             <Turnstile
+//               sitekey={CLOUDFLARE_TURNSTILE_SITE_KEY}
+//               onVerify={(token) => {
+//                 setTurnstileToken(token);
+//                 setMessage(''); // Clear message on successful verification
+//               }}
+//               onExpire={() => {
+//                 setTurnstileToken(null);
+//                 setMessage('CAPTCHA expired, please re-verify.');
+//               }}
+//               onError={(error) => {
+//                 console.error('Turnstile error:', error);
+//                 setTurnstileToken(null);
+//                 setMessage('CAPTCHA encountered an error. Please try again.');
+//               }}
+//             />
+//           </div>
+//         )}
+//         {!CLOUDFLARE_TURNSTILE_SITE_KEY && (
+//             <div className="mb-6 text-red-500 text-sm">
+//                 Turnstile CAPTCHA is not configured. Please set VITE_CLOUDFLARE_TURNSTILE_SITE_KEY in .env.
+//             </div>
+//         )}
+
+//         <div className="flex items-center justify-between">
+//           <button
+//             type="submit"
+//             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+//             disabled={!turnstileToken} // Disable button until CAPTCHA is complete
+//           >
+//             Log In
+//           </button>
+//         </div>
+//         {message && <p className="text-center mt-4 text-sm text-gray-600">{message}</p>}
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LoginPage;
