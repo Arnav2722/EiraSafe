@@ -5,7 +5,6 @@ import { Shield, BookOpen, Heart, MapPin, AlertTriangle, Moon } from 'lucide-rea
 const HomePage: React.FC = () => {
   return (
     <div className="space-y-10">
-      {/* Hero section */}
       <section className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-bold text-purple-800 mb-4">
           EiraSafe
