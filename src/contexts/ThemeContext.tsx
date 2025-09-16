@@ -1,24 +1,38 @@
-// // contexts/ThemeContext.tsx
-// import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
-// const ThemeContext = createContext(null);
+interface ThemeContextType {
+    theme: string;
+    toggleTheme: () => void;
+}
 
-// export const ThemeProvider = ({ children }) => {
-//     const [theme, setTheme] = useState('light'); // Initial theme
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-//     const toggleTheme = () => {
-//         setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-//     };
+interface ThemeProviderProps {
+    children: ReactNode;
+}
 
-//     useEffect(() => {
-//         document.documentElement.className = theme;
-//     }, [theme]);
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+    const [theme, setTheme] = useState('light');
 
-//     return (
-//         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-//             {children}
-//         </ThemeContext.Provider>
-//     );
-// };
+    const toggleTheme = () => {
+        setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
 
-// export const useTheme = () => useContext(ThemeContext);
+    useEffect(() => {
+        document.body.className = theme;
+    }, [theme]);
+
+    return (
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
+};
+
+export const useTheme = () => {
+    const context = useContext(ThemeContext);
+    if (context === undefined) {
+        throw new Error('useTheme must be used within a ThemeProvider');
+    }
+    return context;
+};
