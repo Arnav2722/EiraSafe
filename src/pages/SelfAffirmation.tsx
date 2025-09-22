@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, Sparkles, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Heart, Sparkles, RefreshCw } from "lucide-react";
 
 const AFFIRMATIONS_FOR_WOMEN = [
   "I am strong, capable, and resilient. I can overcome any challenge.",
@@ -59,10 +59,12 @@ const AFFIRMATIONS_FOR_WOMEN = [
 ];
 
 const SelfAffirmationPage: React.FC = () => {
-  const [currentAffirmation, setCurrentAffirmation] = useState('');
+  const [currentAffirmation, setCurrentAffirmation] = useState("");
 
   const getRandomAffirmation = () => {
-    const randomIndex = Math.floor(Math.random() * AFFIRMATIONS_FOR_WOMEN.length);
+    const randomIndex = Math.floor(
+      Math.random() * AFFIRMATIONS_FOR_WOMEN.length
+    );
     setCurrentAffirmation(AFFIRMATIONS_FOR_WOMEN[randomIndex]);
   };
 
@@ -73,37 +75,39 @@ const SelfAffirmationPage: React.FC = () => {
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-pink-700 flex items-center justify-center">
-          <Heart className="w-8 h-8 mr-2 text-red-500" />
+        <h1 className="text-3xl md:text-4xl font-bold text-pink-700 dark:text-pink-400 flex items-center justify-center">
+          <Heart className="w-8 h-8 mr-2 text-red-500 dark:text-red-400" />
           Self-Love & Affirmations
-          <Sparkles className="w-8 h-8 ml-2 text-yellow-400" />
+          <Sparkles className="w-8 h-8 ml-2 text-yellow-400 dark:text-yellow-300" />
         </h1>
-        <p className="text-gray-600 mt-3 text-lg">
+        <p className="text-gray-600 dark:text-gray-400 mt-3 text-lg">
           Embrace your strength, beauty, and worth.
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-8 text-center border-2 border-pink-100">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8 text-center border-2 border-pink-100 dark:border-pink-900">
         {currentAffirmation ? (
-          <p className="text-gray-800 text-xl md:text-2xl font-semibold italic">
+          <p className="text-gray-800 dark:text-white text-xl md:text-2xl font-semibold italic">
             "{currentAffirmation}"
           </p>
         ) : (
-          <p className="text-gray-500 text-xl">Loading affirmation...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-xl">
+            Loading affirmation...
+          </p>
         )}
       </div>
 
       <div className="flex justify-center">
         <button
           onClick={getRandomAffirmation}
-          className="flex items-center px-6 py-3 rounded-full bg-pink-600 text-white font-semibold text-lg hover:bg-pink-700 transition-colors shadow-md"
+          className="flex items-center px-6 py-3 rounded-full bg-pink-600 dark:bg-pink-800 text-white font-semibold text-lg hover:bg-pink-700 dark:hover:bg-pink-900 transition-colors shadow-md"
         >
           <RefreshCw className="w-5 h-5 mr-2" />
           New Affirmation
         </button>
       </div>
 
-      <div className="mt-12 text-center text-gray-500 text-sm">
+      <div className="mt-12 text-center text-gray-500 dark:text-gray-400 text-sm">
         <p>Take a moment to truly feel these words. Your well-being matters.</p>
       </div>
     </div>
