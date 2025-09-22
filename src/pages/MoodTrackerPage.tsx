@@ -23,18 +23,24 @@ type Affirmation = {
 };
 
 const affirmations: Affirmation[] = [
-  { text: "I am stronger than I think.", category: "strength" },
-  { text: "I deserve peace and safety.", category: "safety" },
-  { text: "One step at a time, I am healing.", category: "healing" },
-  { text: "My feelings are valid and important.", category: "healing" },
-  { text: "I am worthy of respect and kindness.", category: "safety" },
-  { text: "I trust my instincts.", category: "strength" },
-  { text: "I have the power to create change in my life.", category: "hope" },
+  { text: "You are stronger than you think.", category: "strength" },
+  { text: "You deserve peace and safety.", category: "safety" },
+  { text: "One step at a time, You are healing.", category: "healing" },
+  { text: "Your feelings are valid and important.", category: "healing" },
+  { text: "You are worthy of respect and kindness.", category: "safety" },
+  { text: "You must trust your instincts.", category: "strength" },
+  {
+    text: "You have the power to create change in your life.",
+    category: "hope",
+  },
   { text: "I am not alone, even when I feel lonely.", category: "hope" },
-  { text: "I can ask for help when I need it.", category: "safety" },
+  { text: "You can ask for help when you need it.", category: "safety" },
   { text: "Each day contains possibilities for healing.", category: "healing" },
-  { text: "I am resilient and can overcome challenges.", category: "strength" },
-  { text: "My story matters and has meaning.", category: "hope" },
+  {
+    text: "You are resilient and can overcome challenges.",
+    category: "strength",
+  },
+  { text: "Your story matters and has meaning.", category: "hope" },
 ];
 
 const selectTargetedAffirmation = (mood: number): Affirmation => {
@@ -342,4 +348,4 @@ const MoodTrackerPage: React.FC = () => {
   );
 };
 
-export default MoodTrackerPage; 
+export default MoodTrackerPage;
