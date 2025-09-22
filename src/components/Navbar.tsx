@@ -354,7 +354,7 @@ const Navbar: React.FC = () => {
                 <img
                   src={darkLogo}
                   alt="EiraSafe Logo"
-                  className="h-8 w-auto"
+                  className="h-24"
                 />
               )}
             </Link>
